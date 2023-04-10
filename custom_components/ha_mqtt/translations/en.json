@@ -1,0 +1,15 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "MQTT云服务",
+                "description": "无需公网域名访问，云端控制HomeAssistant设备",
+                "data": {}
+            }
+        },
+        "error": {},
+        "abort": {
+            "single_instance_allowed": "仅允许单个配置."
+        }
+    }
+}
