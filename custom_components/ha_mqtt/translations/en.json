@@ -4,7 +4,9 @@
             "user": {
                 "title": "MQTT云服务",
                 "description": "无需公网域名访问，云端控制HomeAssistant设备",
-                "data": {}
+                "data": {
+                    "token": "HomeAssistant长令牌"
+                }
             }
         },
         "error": {},

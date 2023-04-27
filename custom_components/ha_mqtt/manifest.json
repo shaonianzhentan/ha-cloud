@@ -1,7 +1,7 @@
 {
     "domain": "ha_mqtt",
     "name": "MQTT\u4E91\u670D\u52A1",
-    "version": "2023.4.10",
+    "version": "2023.4.27",
     "config_flow": true,
     "documentation": "https://github.com/shaonianzhentan/ha_mqtt",
     "requirements": [

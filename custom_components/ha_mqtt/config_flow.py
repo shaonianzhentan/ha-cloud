@@ -9,7 +9,9 @@ from homeassistant.data_entry_flow import FlowResult
 from .manifest import manifest
 
 DOMAIN = manifest.domain
-DATA_SCHEMA = vol.Schema({})
+DATA_SCHEMA = vol.Schema({
+    vol.Required("token"): str
+})
 
 class SimpleConfigFlow(ConfigFlow, domain=DOMAIN):
 
@@ -24,5 +26,9 @@ class SimpleConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=DATA_SCHEMA)
+        
+        # 验证token
+        token = user_input['token']
+        
 
         return self.async_create_entry(title=DOMAIN, data=user_input)
