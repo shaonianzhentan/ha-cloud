@@ -129,8 +129,7 @@ class HaMqtt():
         msg_topic = data['topic']
         msg_type = data['type']
         msg_data = data['data']
-
-        url = msg_data.get('url')
+        
         body = msg_data.get('data', {})
         print(data)
 
@@ -141,7 +140,9 @@ class HaMqtt():
             url = self.mobile_app.get_webhook_url(msg_data['webhook_id'])
             result = await self.async_http_post(url, body)
         elif msg_type == 'rest': # REST API
+            base_url = get_url(self.hass).strip('/')
             method = msg_data['method'].lower()
+            url = base_url + msg_data['path']
             if method == 'get':
                 result = await self.async_http_get(url, body)
             elif method == 'post':
