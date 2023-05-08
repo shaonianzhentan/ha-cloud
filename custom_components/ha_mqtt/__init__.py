@@ -18,6 +18,7 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = manifest.domain
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    print(entry.entry_id)
     config = entry.data
     hass.data[DOMAIN] = await hass.async_add_executor_job(HaMqtt, hass, {
         'topic': entry.entry_id,
@@ -131,6 +132,7 @@ class HaMqtt():
         
         body = msg_data.get('data', {})
         print(data)
+        result = None
 
         if msg_type == 'registrations': # 注册
             base_url = get_url(self.hass).strip('/')
@@ -147,12 +149,13 @@ class HaMqtt():
             elif method == 'post':
                 result = await self.async_http_post(url, body)
 
-        self.publish(msg_topic, {
-            'id': msg_id,
-            'time': int(time.time()),
-            'type': msg_type,
-            'data': result
-        })
+        if result is not None:
+            self.publish(msg_topic, {
+                'id': msg_id,
+                'time': int(time.time()),
+                'type': msg_type,
+                'data': result
+            })
 
     async def async_http_post(self, url, data):
         headers = {
