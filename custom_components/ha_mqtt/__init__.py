@@ -18,9 +18,8 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = manifest.domain
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    print(entry)
     config = entry.data
-    hass.data[DOMAIN] = await hass.async_add_executor_job(HaMqtt, hass, config={
+    hass.data[DOMAIN] = await hass.async_add_executor_job(HaMqtt, hass, {
         'topic': entry.entry_id,
         'token': config['token']
     })
