@@ -6,9 +6,8 @@ from homeassistant.const import (
     EVENT_HOMEASSISTANT_STARTED,
     EVENT_STATE_CHANGED,
 )
-
 import paho.mqtt.client as mqtt
-import logging, json, time, uuid, aiohttp
+import logging, json, time, uuid, aiohttp, urllib
 
 from .mobile_app import MobileApp
 from .EncryptHelper import EncryptHelper
@@ -20,10 +19,21 @@ DOMAIN = manifest.domain
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     print(entry.entry_id)
     config = entry.data
+    topic = entry.entry_id
+    token = config['token']
     hass.data[DOMAIN] = await hass.async_add_executor_job(HaMqtt, hass, {
-        'topic': entry.entry_id,
-        'token': config['token']
+        'topic': topic,
+        'token': token
     })
+
+    async def qrcode_service(service):
+        qrc = urllib.parse.quote(f'ha:{token}#{topic}')
+
+        title = '使用【HomeAssistant家庭助理】小程序扫码关联'
+        message = f'[![qrcode](https://cdn.dotmaui.com/qrc/?t={qrc})](https://github.com/shaonianzhentan/ha_wechat) <font size="6">内含密钥和订阅主题<br/>请勿截图分享</font>'
+        await hass.services.async_call('persistent_notification', 'create', { 'title': title, 'message': message })
+
+    hass.services.async_register(DOMAIN, 'qrcode', qrcode_service)
     return True
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
