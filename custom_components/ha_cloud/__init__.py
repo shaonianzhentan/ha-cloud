@@ -111,7 +111,7 @@ class HaMqtt():
             self.msg_cache[msg_id] = now
 
             # 消息处理
-            self.hass.loop.create_task(self.async_handle_message(data))
+            self.hass.async_create_task(self.async_handle_message(data))
 
         except Exception as ex:
             print(ex)
