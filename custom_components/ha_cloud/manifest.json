@@ -1,9 +1,9 @@
 {
     "domain": "ha_cloud",
     "name": "\u5BB6\u5EAD\u52A9\u7406\u4E91\u670D\u52A1",
-    "version": "2023.5.9",
+    "version": "2023.5.10",
     "config_flow": true,
-    "documentation": "https://github.com/shaonianzhentan/ha_mqtt",
+    "documentation": "https://github.com/shaonianzhentan/ha-cloud",
     "requirements": [
         "paho-mqtt>=1.6.1",
         "pyDes>=2.0.1"
