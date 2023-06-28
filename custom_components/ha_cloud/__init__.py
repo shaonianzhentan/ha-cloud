@@ -178,7 +178,7 @@ class HaMqtt():
         elif msg_type == '/api/states/entity_id':
             state = self.hass.states.get(body)
             attrs = state.attributes
-            return {
+            result = {
                 'id': state.entity_id,
                 'name': attrs.get('friendly_name'),
                 'icon': attrs.get('icon'),
