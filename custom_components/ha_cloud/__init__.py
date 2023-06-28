@@ -1,5 +1,5 @@
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import CoreState, HomeAssistant, Context
+from homeassistant.core import CoreState, HomeAssistant, Context, split_entity_id
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.network import get_url
 from homeassistant.const import (
@@ -158,6 +158,32 @@ class HaMqtt():
                 result = await self.async_http_get(url, body)
             elif method == 'post':
                 result = await self.async_http_post(url, body)
+        elif msg_type == '/api/states':
+            states = self.hass.states.async_all(body)
+            def states_all(state):
+                attrs = state.attributes
+                return {
+                    'id': state.entity_id,
+                    'name': attrs.get('friendly_name'),
+                    'icon': attrs.get('icon'),
+                    'state': state.state
+                }
+            result = list(map(states_all, states))
+        elif msg_type == '/api/domains':
+            states = self.hass.states.async_all()
+            def states_all(state):
+                domain = split_entity_id(state.entity_id)[0]
+                return domain
+            result = list(set(map(states_all, states)))
+        elif msg_type == '/api/states/entity_id':
+            state = self.hass.states.get(body)
+            attrs = state.attributes
+            return {
+                'id': state.entity_id,
+                'name': attrs.get('friendly_name'),
+                'icon': attrs.get('icon'),
+                'state': state.state
+            }
 
         if result is not None:
             self.publish(msg_topic, {

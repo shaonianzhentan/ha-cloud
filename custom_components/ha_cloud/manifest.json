@@ -1,7 +1,7 @@
 {
     "domain": "ha_cloud",
     "name": "\u5BB6\u5EAD\u52A9\u7406\u4E91\u670D\u52A1",
-    "version": "2023.5.10",
+    "version": "2023.6.28",
     "config_flow": true,
     "documentation": "https://github.com/shaonianzhentan/ha-cloud",
     "requirements": [
